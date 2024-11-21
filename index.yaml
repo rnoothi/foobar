@@ -1,0 +1,31 @@
+apiVersion: v1
+entries:
+  gateway:
+  - apiVersion: v2
+    appVersion: 0.7.1
+    created: "2024-11-21T12:54:14.824476433Z"
+    dependencies:
+    - name: common-library
+      repository: https://helm-charts.newrelic.com
+      version: 1.1.1
+    description: A Helm chart to deploy gateway.
+    digest: 55e4e86f0b9893c0e215e54b5d51472746f1d17bb782d16197e6ce3ac368c800
+    keywords:
+    - infrastructure
+    - newrelic
+    - monitoring
+    - opentelemetry
+    - kubernetes
+    maintainers:
+    - name: juanjjaramillo
+      url: https://github.com/juanjjaramillo
+    - name: csongnr
+      url: https://github.com/csongnr
+    - name: dbudziwojskiNR
+      url: https://github.com/dbudziwojskiNR
+    name: gateway
+    type: application
+    urls:
+    - https://github.com/rnoothi/gateway/releases/download/gateway-0.1.0/gateway-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-11-21T12:54:14.824488124Z"
