@@ -7,21 +7,6 @@ on:
       - gateway-charts
 
 jobs:
-  validate-gh-pages-index:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-      - name: Download remote index file and check equality
-        run: |
-          curl -vsSL https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/index.yaml > index.yaml.remote
-          LOCAL="$(md5sum < index.yaml)"
-          REMOTE="$(md5sum < index.yaml.remote)"
-          echo "$LOCAL" = "$REMOTE"
-          test "$LOCAL" = "$REMOTE"
-
   release:
     runs-on: ubuntu-latest
     #needs: [ validate-gh-pages-index ]
