@@ -16,6 +16,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Add helm repositories
+        run: |
+          helm repo add newrelic-helm-charts https://newrelic.github.io/helm-charts
+          helm repo add newrelic-cdn-helm-charts https://helm-charts.newrelic.com
+
       - name: Configure Git
         run: |
           git config user.name "$GITHUB_ACTOR"
