@@ -14,6 +14,7 @@ processors:
         - query:
             name: foobar
             value: "DELETE FROM Log WHERE pod_name = 'foo'"
+            id: 1
             category: DROP_DATA
 
 
@@ -21,7 +22,7 @@ service:
   enabled: true
 
 ingress:
-  enabled: true
+  enabled: false
 
 
 image:
