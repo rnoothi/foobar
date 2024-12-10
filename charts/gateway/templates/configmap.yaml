@@ -77,11 +77,12 @@ data:
         endpoint: https://staging-log-api.newrelic.com
         sending_queue:
           enabled: false
-        compression: none
+        #compression: none
         encoding: json
         event_api_endpoint: https://staging-insights-collector.newrelic.com
         log_api_endpoint: https://staging-log-api.newrelic.com
-        nr_ingest_host: https://staging-collector.newrelic.com
+        metrics_endpoint: https://staging-metric-api.newrelic.com
+        infra_event_api_endpoint: https://staging-infra-api.newrelic.com
         nr_license_key: ${env:NEW_RELIC_LICENSE_KEY}
 
     service:
