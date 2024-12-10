@@ -14,6 +14,8 @@ spec:
       component: deployment
   template:
     metadata:
+      annotations:
+        checksum/gateway-config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
       labels:
         {{- include "newrelic.common.labels.podLabels" . | nindent 8 }}
         component: deployment
