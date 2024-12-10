@@ -51,7 +51,6 @@ data:
           - query:
               name: {{ $value.query.name | quote }}
               value: {{ $value.query.value | quote }}
-              id: {{ $value.query.id | quote }}
               category: {{ $value.query.category | quote }}
           {{- end }}
 
