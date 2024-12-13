@@ -53,6 +53,7 @@ data:
               value: {{ $value.query.value | quote }}
               category: {{ $value.query.category | quote }}
           {{- end }}
+      cumulativetodelta:
 
     exporters:
       debug:
@@ -96,9 +97,17 @@ data:
           receivers: [ otlp ]
           processors: [ nrprocessor ]
           exporters: [ otlphttp ]
+        metrics/nr:
+          receivers: [ nrproprietaryreceiver ]
+          processors: [nrprocessor]
+          exporters: [ nrcollectorexporter ]
+        metrics/otlp:
+          receivers: [otlp]
+          processors: [nrprocessor]
+          exporters: [ otlphttp ]
         metrics:
           receivers: [prometheus]
-          processors: []
+          processors: [cumulativetodelta]
           exporters: [otlphttp]
 
       telemetry:
