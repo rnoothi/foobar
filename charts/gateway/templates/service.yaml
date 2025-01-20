@@ -1,4 +1,3 @@
-{{- if .Values.service.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -7,13 +6,8 @@ metadata:
   labels:
     {{- include "newrelic.common.labels" . | nindent 4 }}
 spec:
-  # For ALB Ingress Controller, use type: NodePort. https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/guide/ingress/spec/
-  type: NodePort
+  type: ClusterIP
   ports:
-    - name: nr-https
-      port: 443
-      protocol: TCP
-      targetPort: 80
     - name: nr-http
       port: 80
       protocol: TCP
@@ -26,11 +20,7 @@ spec:
       port: 4317
       protocol: TCP
       targetPort: 4317
-    - name: health-http
-      port: 13133
-      protocol: TCP
-      targetPort: 13133
   selector:
     {{- include "newrelic.common.labels.selectorLabels" . | nindent 4 }}
     component: deployment
-{{- end }}
+  internalTrafficPolicy: Cluster

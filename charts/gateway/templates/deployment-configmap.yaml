@@ -4,7 +4,15 @@ metadata:
   name: {{ include "nrKubernetesOtel.deployment.configMap.fullname" . }}
   namespace: {{ .Release.Namespace }}
 data:
-  otelcol-config.yaml: |
+  gateway-config.yaml: |
+    reserved_melt_attributes:
+      Metric:
+        - interval.ms
+        - metricName
+  deployment-config.yaml: |
+    {{- with include "nrKubernetesOtel.deployment.configMap.config" . }}
+    {{- . | nindent 4 }}
+    {{- else }}
     extensions:
       zpages:
       healthcheckv2:
@@ -14,7 +22,7 @@ data:
           include_recoverable_errors: true
           recovery_duration: 5m
         http:
-          endpoint: "0.0.0.0:13133"
+          endpoint: ${env:MY_POD_IP}:13133
           status:
             enabled: true
             path: "/health/status"
@@ -25,21 +33,30 @@ data:
     receivers:
       nrproprietaryreceiver:
         NrHost: "staging-collector.newrelic.com"
-        endpoint: "0.0.0.0:80"
+        Proxy: false
+        Endpoints:
+          event_api_endpoint: {{ include "nrKubernetesOtel.event.endpoint" . }}
+          infra_event_api_endpoint: {{ include "nrKubernetesOtel.infra-event.endpoint" . }}
+          log_api_endpoint: {{ include "nrKubernetesOtel.log.endpoint" . }}
+          metrics_endpoint: {{ include "nrKubernetesOtel.metrics.endpoint" . }}
+          traces_endpoint: {{ include  "nrKubernetesOtel.traces.endpoint" . }}
+        server:
+          endpoint: ${env:MY_POD_IP}:80
+        client:
+          compression: gzip
       otlp:
         protocols:
           http:
-            endpoint: 0.0.0.0:4318
+            endpoint: ${env:MY_POD_IP}:4318
           grpc:
-            endpoint: 0.0.0.0:4317
+            endpoint: ${env:MY_POD_IP}:4317
       prometheus:
         config:
           scrape_configs:
-            - job_name: 'gateway'
+            - job_name: 'pipeline-control-gateway'
               scrape_interval: 10s
               static_configs:
-                - targets: [ '0.0.0.0:8888' ]
-
+                - targets: [ '${env:MY_POD_IP}:8888' ]
 
     processors:
       memory_limiter:
@@ -59,30 +76,19 @@ data:
       debug:
         verbosity: detailed
       otlp:
-        endpoint: staging-otlp.nr-data.net:443
+        endpoint: {{ include "nrKubernetesOtel.grpc.endpoint" . }}
         headers:
           api-key: ${env:NEW_RELIC_LICENSE_KEY}
-        sending_queue:
-          enabled: true
-        compression: none
       otlphttp:
-        endpoint: https://staging-otlp.nr-data.net
+        endpoint: {{ include "nrKubernetesOtel.endpoint" . }}
         headers:
           api-key: ${env:NEW_RELIC_LICENSE_KEY}
-        sending_queue:
-          enabled: false
-        compression: none
-        encoding: json
       nrcollectorexporter:
         endpoint: https://staging-log-api.newrelic.com
         sending_queue:
           enabled: false
-        compression: none
+        compression: gzip
         encoding: json
-        event_api_endpoint: https://staging-insights-collector.newrelic.com
-        log_api_endpoint: https://staging-log-api.newrelic.com
-        metrics_endpoint: https://staging-metric-api.newrelic.com
-        infra_event_api_endpoint: https://staging-infra-api.newrelic.com
         nr_license_key: ${env:NEW_RELIC_LICENSE_KEY}
 
     service:
@@ -96,22 +102,38 @@ data:
         logs/otlp:
           receivers: [ otlp ]
           processors: [ nrprocessor ]
-          exporters: [ otlphttp ]
+          exporters: [ otlp ]
         metrics/nr:
-          receivers: [ nrproprietaryreceiver ]
+          receivers: [nrproprietaryreceiver]
           processors: [nrprocessor]
-          exporters: [ nrcollectorexporter ]
+          exporters: [nrcollectorexporter]
         metrics/otlp:
           receivers: [otlp]
+          processors: [ nrprocessor]
+          exporters: [otlp]
+        traces/otlp:
+          receivers: [otlp]
           processors: [nrprocessor]
-          exporters: [ otlphttp ]
+          exporters: [ otlp ]
+        traces/nr:
+          receivers: [ nrproprietaryreceiver ]
+          processors: [ nrprocessor ]
+          exporters: [ nrcollectorexporter ]
         metrics:
           receivers: [prometheus]
-          processors: [cumulativetodelta]
+          processors: []
           exporters: [otlphttp]
 
-      telemetry:
+    telemetry:
+        {{- if include "newrelic.common.verboseLog" . }}
         logs:
+          level: "debug"
+        {{- end }}
+        {{- if include "nrKubernetesOtel.lowDataMode" . }}
+        metrics:
           level: info
+        {{- else}}}
         metrics:
           level: detailed
+        {{- end }}
+    {{- end }}

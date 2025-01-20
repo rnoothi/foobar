@@ -12,3 +12,57 @@ A helper to return the NR endpoint to send data to
     {{- end -}}
 {{- end -}}
 {{- end -}}
+
+{{- /*
+A helper to return the NR GRPC endpoint to send data to
+*/ -}}
+{{- define "nrKubernetesOtel.grpc.endpoint" -}}
+{{- if include "newrelic.common.nrStaging" . -}}
+    "staging-otlp.nr-data.net:443"
+{{- else -}}
+    {{- if hasPrefix "eu" (include "newrelic.common.license._licenseKey" . ) -}}
+        "otlp.eu01.nr-data.net:443"
+    {{- else -}}
+        "otlp.nr-data.net:443"
+    {{- end -}}
+{{- end -}}
+{{- end -}}
+
+
+{{- /*
+A helper to return the NR Event endpoint to send data to
+*/ -}}
+{{- define "nrKubernetesOtel.event.endpoint" -}}
+    "https://staging-insights-collector.newrelic.com"
+{{- end -}}
+
+
+{{- /*
+A helper to return the NR Logs endpoint to send data to
+*/ -}}
+{{- define "nrKubernetesOtel.log.endpoint" -}}
+    "https://staging-log-api.newrelic.com"
+{{- end -}}
+
+
+{{- /*
+A helper to return the NR Metrics endpoint to send data to
+*/ -}}
+{{- define "nrKubernetesOtel.metrics.endpoint" -}}
+    "https://staging-metric-api.newrelic.com"
+{{- end -}}
+
+{{- /*
+A helper to return the NR Traces endpoint to send data to
+*/ -}}
+{{- define "nrKubernetesOtel.traces.endpoint" -}}
+    "https://staging-trace-api.newrelic.com"
+{{- end -}}
+
+
+{{- /*
+A helper to return the NR Infra Event endpoint to send data to
+*/ -}}
+{{- define "nrKubernetesOtel.infra-event.endpoint" -}}
+    "https://staging-infra-api.newrelic.com"
+{{- end -}}
