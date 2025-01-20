@@ -1,6 +1,5 @@
 apiVersion: v2
-name: pipeline-control-gateway
-description: A Helm chart to NewRelic deploy pipeline control gateway.
+name: foobar
 
 type: application
 version: 0.1.0
@@ -16,9 +15,3 @@ maintainers:
   - name: rnoothi
     url: https://github.com/rnoothi
 
-keywords:
-  - infrastructure
-  - newrelic
-  - monitoring
-  - opentelemetry
-  - kubernetes
