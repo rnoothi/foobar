@@ -1,5 +1,22 @@
 apiVersion: v1
 entries:
+  foobar:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2025-01-20T13:44:46.994527376Z"
+    dependencies:
+    - name: common-library
+      repository: https://helm-charts.newrelic.com
+      version: 1.1.1
+    digest: d6068a8eba9c190ad3e0a32ebabc583849bb67151164197ceb8991d81f8c375a
+    maintainers:
+    - name: rnoothi
+      url: https://github.com/rnoothi
+    name: foobar
+    type: application
+    urls:
+    - https://github.com/rnoothi/foobar/releases/download/foobar-0.1.0/foobar-0.1.0.tgz
+    version: 0.1.0
   gateway:
   - apiVersion: v2
     appVersion: 0.7.1
@@ -120,4 +137,4 @@ entries:
     urls:
     - https://github.com/rnoothi/gateway/releases/download/gateway-0.1.0/gateway-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-10T15:12:15.693702166Z"
+generated: "2025-01-20T13:44:46.994542474Z"
