@@ -11,10 +11,6 @@
 {{- include "newrelic.common.naming.truncateToDNSWithSuffix" (dict "name" (include "newrelic.common.naming.fullname" .) "suffix" "deployment-config") -}}
 {{- end -}}
 
-{{- define "nrKubernetesOtel.prometheus.configMap.fullname" -}}
-{{- include "newrelic.common.naming.truncateToDNSWithSuffix" (dict "name" (include "newrelic.common.naming.fullname" .) "suffix" "prometheus-config") -}}
-{{- end -}}
-
 {{- define "nrKubernetesOtel.hpa.fullname" -}}
 {{- include "newrelic.common.naming.truncateToDNSWithSuffix" (dict "name" (include "newrelic.common.naming.fullname" .) "suffix" "hpa") -}}
 {{- end -}}
