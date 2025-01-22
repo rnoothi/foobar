@@ -132,7 +132,7 @@ data:
         {{- if include "nrKubernetesOtel.lowDataMode" . }}
         metrics:
           level: info
-        {{- else}}}
+        {{- else}}
         metrics:
           level: detailed
         {{- end }}
