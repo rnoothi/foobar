@@ -32,7 +32,7 @@ data:
 
     receivers:
       nrproprietaryreceiver:
-        NrHost: "staging-collector.newrelic.com"
+        NrHost: {{ include "nrKubernetesOtel.NrHost.endpoint" . }}
         EnableDefaultHost: false
         Proxy: false
         Endpoints:
