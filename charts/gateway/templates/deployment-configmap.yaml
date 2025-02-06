@@ -59,7 +59,8 @@ data:
               static_configs:
                 - targets: [ '${env:MY_POD_IP}:8888' ]
                   labels:
-                    version: {{ .Chart.Version }} 
+                    version: {{ .Chart.Version }}
+                    appVersion: {{ .Chart.AppVersion }}
       prometheus/ui:
         config:
            scrape_configs:
@@ -69,6 +70,7 @@ data:
                 - targets: [ '${env:MY_POD_IP}:8888' ]
                   labels:
                     version: {{ .Chart.Version }}
+                    appVersion: {{ .Chart.AppVersion }}
               metric_relabel_configs:
                 - source_labels: [ __name__ ]
                   regex: '.*bytes_(sent|received).*'
@@ -82,6 +84,7 @@ data:
                 - targets: [ '${env:MY_POD_IP}:8888' ]
                   labels:
                     version: {{ .Chart.Version }}
+                    appVersion: {{ .Chart.AppVersion }}
               metric_relabel_configs:
                 - source_labels: [ __name__ ]
                   regex: '.*bytes_received.*'
@@ -95,6 +98,7 @@ data:
                 - targets: [ '${env:MY_POD_IP}:8888' ]
                   labels:
                     version: {{ .Chart.Version }}
+                    appVersion: {{ .Chart.AppVersion }}
               metric_relabel_configs:
                 - source_labels: [ __name__ ]
                   regex: '.*bytes_(sent|received).*'
