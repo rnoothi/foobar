@@ -19,6 +19,22 @@ entries:
     version: 0.1.0
   gateway:
   - apiVersion: v2
+    appVersion: 0.2.1
+    created: "2025-02-06T08:53:33.587235982Z"
+    dependencies:
+    - name: common-library
+      repository: https://helm-charts.newrelic.com
+      version: 1.1.1
+    digest: a036cb847fe30bfe03e7860346a7e5c07499d5da9c35e625c0a02d9c0aca1beb
+    maintainers:
+    - name: rnoothi
+      url: https://github.com/rnoothi
+    name: gateway
+    type: application
+    urls:
+    - https://github.com/rnoothi/foobar/releases/download/gateway-0.2.4/gateway-0.2.4.tgz
+    version: 0.2.4
+  - apiVersion: v2
     appVersion: 0.1.0
     created: "2025-02-05T09:46:11.595687238Z"
     dependencies:
@@ -201,4 +217,4 @@ entries:
     urls:
     - https://github.com/rnoothi/gateway/releases/download/gateway-0.1.0/gateway-0.1.0.tgz
     version: 0.1.0
-generated: "2025-02-05T09:46:11.595732342Z"
+generated: "2025-02-06T08:53:33.587296185Z"
