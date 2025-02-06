@@ -32,7 +32,8 @@ data:
 
     receivers:
       nrproprietaryreceiver:
-        NrHost: "staging-collector.newrelic.com"
+        NrHost: {{ include "nrKubernetesOtel.NrHost.endpoint" . }}
+        EnableDefaultHost: false
         Proxy: false
         Endpoints:
           event_api_endpoint: {{ include "nrKubernetesOtel.event.endpoint" . }}
@@ -57,6 +58,51 @@ data:
               scrape_interval: 10s
               static_configs:
                 - targets: [ '${env:MY_POD_IP}:8888' ]
+                  labels:
+                    version: {{ .Chart.Version }}
+                    appVersion: {{ .Chart.AppVersion }}
+      prometheus/ui:
+        config:
+           scrape_configs:
+            - job_name: 'pipeline-gateway-ui-metrics'
+              scrape_interval: 10s
+              static_configs:
+                - targets: [ '${env:MY_POD_IP}:8888' ]
+                  labels:
+                    version: {{ .Chart.Version }}
+                    appVersion: {{ .Chart.AppVersion }}
+              metric_relabel_configs:
+                - source_labels: [ __name__ ]
+                  regex: '.*bytes_(sent|received).*'
+                  action: keep
+      prometheus/usage:
+        config:
+          scrape_configs:
+            - job_name: 'pipeline-gateway-usage'
+              scrape_interval: 60s
+              static_configs:
+                - targets: [ '${env:MY_POD_IP}:8888' ]
+                  labels:
+                    version: {{ .Chart.Version }}
+                    appVersion: {{ .Chart.AppVersion }}
+              metric_relabel_configs:
+                - source_labels: [ __name__ ]
+                  regex: '.*bytes_received.*'
+                  action: keep
+      prometheus/monitoring:
+        config:
+          scrape_configs:
+            - job_name: 'pipeline-gateway-monitoring'
+              scrape_interval: 10s
+              static_configs:
+                - targets: [ '${env:MY_POD_IP}:8888' ]
+                  labels:
+                    version: {{ .Chart.Version }}
+                    appVersion: {{ .Chart.AppVersion }}
+              metric_relabel_configs:
+                - source_labels: [ __name__ ]
+                  regex: '.*bytes_(sent|received).*'
+                  action: drop
 
     processors:
       memory_limiter:
@@ -90,6 +136,10 @@ data:
         compression: gzip
         encoding: json
         nr_license_key: ${env:NEW_RELIC_LICENSE_KEY}
+      usageexporter:
+        endpoint: {{ include "nrCollector.endpoint" . }}/external-usage
+        headers:
+          api-key: ${env:NEW_RELIC_LICENSE_KEY}
 
     service:
       extensions: [ healthcheckv2 ]
@@ -119,8 +169,16 @@ data:
           receivers: [ nrproprietaryreceiver ]
           processors: [ nrprocessor ]
           exporters: [ nrcollectorexporter ]
-        metrics:
-          receivers: [prometheus]
+        metrics/ui:
+          receivers: [prometheus/ui]
+          processors: []
+          exporters: [otlphttp]
+        metrics/usage:
+          receivers: [prometheus/usage]
+          processors: [cumulativetodelta]
+          exporters: [usageexporter]
+        metrics/monitoring:
+          receivers: [prometheus/monitoring]
           processors: []
           exporters: [otlphttp]
 
