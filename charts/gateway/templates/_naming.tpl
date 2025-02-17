@@ -19,6 +19,3 @@
 {{- include "newrelic.common.naming.truncateToDNSWithSuffix" (dict "name" (include "newrelic.common.naming.fullname" .) "suffix" "service") -}}
 {{- end -}}
 
-{{- define "nrKubernetesOtel.ingress.fullname" -}}
-{{- include "newrelic.common.naming.truncateToDNSWithSuffix" (dict "name" (include "newrelic.common.naming.fullname" .) "suffix" "ingress") -}}
-{{- end -}}

@@ -33,8 +33,11 @@ data:
     receivers:
       nrproprietaryreceiver:
         NrHost: {{ include "nrKubernetesOtel.NrHost.endpoint" . }}
-        EnableDefaultHost: false
-        Proxy: false
+        logging:
+          enable:  {{ .Values.receivers.nrproprietaryreceiver.logging.enable }}
+        EnableDefaultHost:  {{ .Values.receivers.nrproprietaryreceiver.enableDefaultHost }}
+        EnableRuntimeMetrics:  {{ .Values.receivers.nrproprietaryreceiver.enableRuntimeMetrics }}
+        Proxy:  {{ .Values.receivers.nrproprietaryreceiver.proxy }}
         Endpoints:
           event_api_endpoint: {{ include "nrKubernetesOtel.event.endpoint" . }}
           infra_event_api_endpoint: {{ include "nrKubernetesOtel.infra-event.endpoint" . }}
@@ -61,6 +64,8 @@ data:
                   labels:
                     version: {{ .Chart.Version }}
                     appVersion: {{ .Chart.AppVersion }}
+                    podName: '${env:MY_POD_NAME}'
+                    podNamespace: '${env:MY_POD_NAMESPACE}'
       prometheus/ui:
         config:
            scrape_configs:
@@ -71,6 +76,8 @@ data:
                   labels:
                     version: {{ .Chart.Version }}
                     appVersion: {{ .Chart.AppVersion }}
+                    podName: '${env:MY_POD_NAME}'
+                    podNamespace: '${env:MY_POD_NAMESPACE}'
               metric_relabel_configs:
                 - source_labels: [ __name__ ]
                   regex: '.*bytes_(sent|received).*'
@@ -85,6 +92,8 @@ data:
                   labels:
                     version: {{ .Chart.Version }}
                     appVersion: {{ .Chart.AppVersion }}
+                    podName: '${env:MY_POD_NAME}'
+                    podNamespace: '${env:MY_POD_NAMESPACE}'            
               metric_relabel_configs:
                 - source_labels: [ __name__ ]
                   regex: '.*bytes_received.*'
@@ -99,6 +108,8 @@ data:
                   labels:
                     version: {{ .Chart.Version }}
                     appVersion: {{ .Chart.AppVersion }}
+                    podName: '${env:MY_POD_NAME}'
+                    podNamespace: '${env:MY_POD_NAMESPACE}'
               metric_relabel_configs:
                 - source_labels: [ __name__ ]
                   regex: '.*bytes_(sent|received).*'
