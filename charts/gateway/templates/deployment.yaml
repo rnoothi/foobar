@@ -84,9 +84,37 @@ spec:
             {{- . | toYaml | nindent 12 }}
             {{- end }}
           ports:
-            - name: http
+            - name: otlp-http
               containerPort: 4318
               protocol: TCP
+            - name: otlp-grpc
+              containerPort: 4317
+              protocol: TCP
+            - name: nr-http
+              containerPort: 80
+              protocol: TCP
+            - name: health-http
+              containerPort: 13133
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health/status
+              port: 13133
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            httpGet:
+              path: /health/status
+              port: 13133
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
           volumeMounts:
             - name: deployment-config
               mountPath: /config
