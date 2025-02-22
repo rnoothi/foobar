@@ -141,7 +141,7 @@ data:
         headers:
           api-key: ${env:NEW_RELIC_LICENSE_KEY}
       nrcollectorexporter:
-        endpoint: https://staging-log-api.newrelic.com
+        endpoint: {{ include "nrKubernetesOtel.log.endpoint" . }}
         sending_queue:
           enabled: false
         compression: gzip
