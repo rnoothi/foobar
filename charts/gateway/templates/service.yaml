@@ -9,17 +9,17 @@ spec:
   type: ClusterIP
   ports:
     - name: nr-http
-      port: 80
+      port: {{ .Values.ports.nrHttp }}
       protocol: TCP
-      targetPort: 80
+      targetPort: {{ .Values.ports.nrHttp }}
     - name: otlp-http
-      port: 4318
+      port: {{ .Values.ports.otlpHttp }}
       protocol: TCP
-      targetPort: 4318
+      targetPort: {{ .Values.ports.otlpHttp }}
     - name: otlp-grpc
-      port: 4317
+      port: {{ .Values.ports.otlpGrpc }}
       protocol: TCP
-      targetPort: 4317
+      targetPort: {{ .Values.ports.otlpGrpc }}
   selector:
     {{- include "newrelic.common.labels.selectorLabels" . | nindent 4 }}
     component: deployment
