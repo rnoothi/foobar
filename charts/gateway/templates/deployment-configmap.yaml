@@ -22,7 +22,7 @@ data:
           include_recoverable_errors: true
           recovery_duration: 5m
         http:
-          endpoint: ${env:MY_POD_IP}:13133
+          endpoint: ${env:MY_POD_IP}:{{ .Values.ports.healthHttp }}
           status:
             enabled: true
             path: "/health/status"
@@ -45,15 +45,15 @@ data:
           metrics_endpoint: {{ include "nrKubernetesOtel.metrics.endpoint" . }}
           traces_endpoint: {{ include  "nrKubernetesOtel.traces.endpoint" . }}
         server:
-          endpoint: ${env:MY_POD_IP}:80
+          endpoint: ${env:MY_POD_IP}:{{ .Values.ports.nrHttp }}
         client:
           compression: gzip
       otlp:
         protocols:
           http:
-            endpoint: ${env:MY_POD_IP}:4318
+            endpoint: ${env:MY_POD_IP}:{{ .Values.ports.otlpHttp }}
           grpc:
-            endpoint: ${env:MY_POD_IP}:4317
+            endpoint: ${env:MY_POD_IP}:{{ .Values.ports.otlpGrpc }}
       prometheus:
         config:
           scrape_configs:
