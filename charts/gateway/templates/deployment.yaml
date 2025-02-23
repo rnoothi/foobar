@@ -85,22 +85,22 @@ spec:
             {{- end }}
           ports:
             - name: otlp-http
-              containerPort: 4318
+              containerPort: {{ .Values.ports.otlpHttp }}
               protocol: TCP
             - name: otlp-grpc
-              containerPort: 4317
+              containerPort: {{ .Values.ports.otlpGrpc }}
               protocol: TCP
             - name: nr-http
-              containerPort: 80
+              containerPort: {{ .Values.ports.nrHttp }}
               protocol: TCP
             - name: health-http
-              containerPort: 13133
+              containerPort: {{ .Values.ports.healthHttp }}
               protocol: TCP
           livenessProbe:
             failureThreshold: 3
             httpGet:
               path: /health/status
-              port: 13133
+              port: {{ .Values.ports.healthHttp }}
               scheme: HTTP
             initialDelaySeconds: 5
             periodSeconds: 5
@@ -109,7 +109,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /health/status
-              port: 13133
+              port: {{ .Values.ports.healthHttp }}
             initialDelaySeconds: 5
             periodSeconds: 5
             timeoutSeconds: 1

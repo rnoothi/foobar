@@ -7,6 +7,12 @@ autoscaling:
   maxReplicas: 10
   targetCPUUtilizationPercentage: 70
 
+ports:
+  nrHttp: 80
+  otlpHttp: 4318
+  otlpGrpc: 4317
+  healthHttp: 13133
+
 receivers:
   nrproprietaryreceiver:
     logging:
