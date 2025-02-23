@@ -12,6 +12,7 @@ ports:
   otlpHttp: 4318
   otlpGrpc: 4317
   healthHttp: 13133
+  prometheus: 8888
 
 receivers:
   nrproprietaryreceiver:
