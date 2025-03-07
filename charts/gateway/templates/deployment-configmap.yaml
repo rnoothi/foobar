@@ -35,6 +35,11 @@ data:
         NrHost: {{ include "nrKubernetesOtel.NrHost.endpoint" . }}
         logging:
           enable:  {{ .Values.receivers.nrproprietaryreceiver.logging.enable }}
+        logfilter:
+          enabled:  {{ .Values.receivers.nrproprietaryreceiver.logfilter.enabled }}
+          flush_interval:  {{ .Values.receivers.nrproprietaryreceiver.logfilter.flush_interval }}
+          pattern:  {{ .Values.receivers.nrproprietaryreceiver.logfilter.pattern }}
+          buffer_size:  {{ .Values.receivers.nrproprietaryreceiver.logfilter.buffer_size }}  
         EnableDefaultHost:  {{ .Values.receivers.nrproprietaryreceiver.enableDefaultHost }}
         EnableRuntimeMetrics:  {{ .Values.receivers.nrproprietaryreceiver.enableRuntimeMetrics }}
         Proxy:  {{ .Values.receivers.nrproprietaryreceiver.proxy }}
