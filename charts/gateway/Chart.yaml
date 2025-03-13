@@ -2,14 +2,14 @@ apiVersion: v2
 name: gateway
 
 type: application
-version:  0.3.0
+version:  0.3.1
 
 dependencies:
   - name: common-library
     version: 1.1.1
     repository: "https://helm-charts.newrelic.com"
 
-appVersion: "0.2.4"
+appVersion: "0.2.5"
 
 maintainers:
   - name: rnoothi
