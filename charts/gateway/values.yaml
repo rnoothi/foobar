@@ -14,6 +14,11 @@ ports:
   healthHttp: 13133
   prometheus: 8888
 
+prometheus:
+  scrape_interval: 15s
+  usage:
+    scrape_interval: 60s
+
 receivers:
   nrproprietaryreceiver:
     logging:
@@ -28,13 +33,27 @@ receivers:
     proxy: false
 
 processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 100
   nrprocessor:
       queries:
         - query:
             name: foobar
             value: "DELETE FROM Log WHERE pod_name = 'foo'"
             category: DROP_DATA
+      queue:
+        enabled: true
+        queue_size: 100
 
+nrcollectorexporter:
+  retry_on_failure:
+    enabled: false
+  timeout: 10s
+  sending_queue:
+    enabled: false
+  compression: gzip
+  encoding: json
 
 image:
   # -- OTel collector image to be deployed. You can use your own collector as long it accomplish the following requirements mentioned below.

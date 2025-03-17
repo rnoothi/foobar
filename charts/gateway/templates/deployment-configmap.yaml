@@ -40,10 +40,10 @@ data:
           flush_interval:  {{ .Values.receivers.nrproprietaryreceiver.logfilter.flush_interval }}
           pattern:  {{ .Values.receivers.nrproprietaryreceiver.logfilter.pattern }}
           buffer_size:  {{ .Values.receivers.nrproprietaryreceiver.logfilter.buffer_size }}  
-        EnableDefaultHost:  {{ .Values.receivers.nrproprietaryreceiver.enableDefaultHost }}
-        EnableRuntimeMetrics:  {{ .Values.receivers.nrproprietaryreceiver.enableRuntimeMetrics }}
-        Proxy:  {{ .Values.receivers.nrproprietaryreceiver.proxy }}
-        Endpoints:
+        enable_default_host:  {{ .Values.receivers.nrproprietaryreceiver.enableDefaultHost }}
+        enable_runtime_metrics:  {{ .Values.receivers.nrproprietaryreceiver.enableRuntimeMetrics }}
+        proxy:  {{ .Values.receivers.nrproprietaryreceiver.proxy }}
+        endpoints:
           event_api_endpoint: {{ include "nrKubernetesOtel.event.endpoint" . }}
           infra_event_api_endpoint: {{ include "nrKubernetesOtel.infra-event.endpoint" . }}
           log_api_endpoint: {{ include "nrKubernetesOtel.log.endpoint" . }}
@@ -63,26 +63,22 @@ data:
         config:
           scrape_configs:
             - job_name: 'pipeline-control-gateway'
-              scrape_interval: 10s
+              scrape_interval:  {{ .Values.prometheus.scrape_interval }}
               static_configs:
                 - targets: [ '${env:MY_POD_IP}:{{ .Values.ports.prometheus }}' ]
                   labels:
                     version: {{ .Chart.Version }}
-                    appVersion: {{ .Chart.AppVersion }}
                     podName: '${env:MY_POD_NAME}'
-                    podNamespace: '${env:MY_POD_NAMESPACE}'
       prometheus/ui:
         config:
            scrape_configs:
             - job_name: 'pipeline-gateway-ui-metrics'
-              scrape_interval: 10s
+              scrape_interval:  {{ .Values.prometheus.scrape_interval }}
               static_configs:
                 - targets: [ '${env:MY_POD_IP}:{{ .Values.ports.prometheus }}' ]
                   labels:
                     version: {{ .Chart.Version }}
-                    appVersion: {{ .Chart.AppVersion }}
                     podName: '${env:MY_POD_NAME}'
-                    podNamespace: '${env:MY_POD_NAMESPACE}'
               metric_relabel_configs:
                 - source_labels: [ __name__ ]
                   regex: '.*bytes_(sent|received).*'
@@ -91,14 +87,12 @@ data:
         config:
           scrape_configs:
             - job_name: 'pipeline-gateway-usage'
-              scrape_interval: 60s
+              scrape_interval: {{ .Values.prometheus.usage.scrape_interval }}
               static_configs:
                 - targets: [ '${env:MY_POD_IP}:{{ .Values.ports.prometheus }}' ]
                   labels:
                     version: {{ .Chart.Version }}
-                    appVersion: {{ .Chart.AppVersion }}
-                    podName: '${env:MY_POD_NAME}'
-                    podNamespace: '${env:MY_POD_NAMESPACE}'            
+                    podName: '${env:MY_POD_NAME}'         
               metric_relabel_configs:
                 - source_labels: [ __name__ ]
                   regex: '.*bytes_received.*'
@@ -107,14 +101,12 @@ data:
         config:
           scrape_configs:
             - job_name: 'pipeline-gateway-monitoring'
-              scrape_interval: 10s
+              scrape_interval:  {{ .Values.prometheus.scrape_interval }}
               static_configs:
                 - targets: [ '${env:MY_POD_IP}:{{ .Values.ports.prometheus }}' ]
                   labels:
                     version: {{ .Chart.Version }}
-                    appVersion: {{ .Chart.AppVersion }}
                     podName: '${env:MY_POD_NAME}'
-                    podNamespace: '${env:MY_POD_NAMESPACE}'
               metric_relabel_configs:
                 - source_labels: [ __name__ ]
                   regex: '.*bytes_(sent|received).*'
@@ -122,9 +114,12 @@ data:
 
     processors:
       memory_limiter:
-        check_interval: 1s
-        limit_mib: 100
+        check_interval: {{ .Values.processors.memory_limiter.check_interval }}
+        limit_mib:  {{ .Values.processors.memory_limiter.limit_mib }}
       nrprocessor:
+        queue:
+        enabled: {{ .Values.processors.nrprocessor.queue.enabled }}
+        queue_size: {{ .Values.processors.nrprocessor.queue.queue_size }}
         queries:
           {{- range $value := .Values.processors.nrprocessor.queries }}
           - query:
@@ -147,10 +142,13 @@ data:
           api-key: ${env:NEW_RELIC_LICENSE_KEY}
       nrcollectorexporter:
         endpoint: {{ include "nrKubernetesOtel.log.endpoint" . }}
+        retry_on_failure:
+          enabled: {{ .Values.nrcollectorexporter.retry_on_failure.enabled }}
+        timeout: {{ .Values.nrcollectorexporter.timeout }}
         sending_queue:
-          enabled: false
-        compression: gzip
-        encoding: json
+          enabled: {{ .Values.nrcollectorexporter.sending_queue.enabled }}
+        compression: {{ .Values.nrcollectorexporter.compression }}
+        encoding: {{ .Values.nrcollectorexporter.encoding }}
         nr_license_key: ${env:NEW_RELIC_LICENSE_KEY}
       usageexporter:
         endpoint: {{ include "nrCollector.endpoint" . }}/external-usage
