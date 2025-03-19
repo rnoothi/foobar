@@ -32,7 +32,7 @@ data:
 
     receivers:
       nrproprietaryreceiver:
-        NrHost: {{ include "nrKubernetesOtel.NrHost.endpoint" . }}
+        nr_host: {{ include "nrKubernetesOtel.NrHost.endpoint" . }}
         logging:
           enable:  {{ .Values.receivers.nrproprietaryreceiver.logging.enable }}
         logfilter:
