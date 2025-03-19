@@ -122,8 +122,8 @@ data:
         limit_mib:  {{ .Values.processors.memory_limiter.limit_mib }}
       nrprocessor:
         queue:
-        enabled: {{ .Values.processors.nrprocessor.queue.enabled }}
-        queue_size: {{ .Values.processors.nrprocessor.queue.queue_size }}
+         enabled: {{ .Values.processors.nrprocessor.queue.enabled }}
+         queue_size: {{ .Values.processors.nrprocessor.queue.queue_size }}
         queries:
           {{- range $value := .Values.processors.nrprocessor.queries }}
           - query:
