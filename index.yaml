@@ -20,6 +20,22 @@ entries:
   gateway:
   - apiVersion: v2
     appVersion: 0.2.5
+    created: "2025-03-19T08:42:59.035946792Z"
+    dependencies:
+    - name: common-library
+      repository: https://helm-charts.newrelic.com
+      version: 1.1.1
+    digest: eff060245260fec42b93359c144ea9855ece52f5f1697f77be8667308f0fc66e
+    maintainers:
+    - name: rnoothi
+      url: https://github.com/rnoothi
+    name: gateway
+    type: application
+    urls:
+    - https://github.com/rnoothi/foobar/releases/download/gateway-0.3.2/gateway-0.3.2.tgz
+    version: 0.3.2
+  - apiVersion: v2
+    appVersion: 0.2.5
     created: "2025-03-13T12:50:51.019797929Z"
     dependencies:
     - name: common-library
@@ -346,4 +362,4 @@ entries:
     urls:
     - https://github.com/rnoothi/foobar/releases/download/pipeline-control-gateway-0.3.1/pipeline-control-gateway-0.3.1.tgz
     version: 0.3.1
-generated: "2025-03-19T08:21:18.078448335Z"
+generated: "2025-03-19T08:42:59.036096882Z"
