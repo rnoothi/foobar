@@ -69,6 +69,7 @@ data:
                   labels:
                     version: {{ .Chart.Version }}
                     podName: '${env:MY_POD_NAME}'
+                    clusterName: {{ .Values.global.cluster }}
       prometheus/ui:
         config:
            scrape_configs:
@@ -79,6 +80,7 @@ data:
                   labels:
                     version: {{ .Chart.Version }}
                     podName: '${env:MY_POD_NAME}'
+                    clusterName: {{ .Values.global.cluster }}
               metric_relabel_configs:
                 - source_labels: [ __name__ ]
                   regex: '.*bytes_(sent|received).*'
@@ -92,7 +94,8 @@ data:
                 - targets: [ '${env:MY_POD_IP}:{{ .Values.ports.prometheus }}' ]
                   labels:
                     version: {{ .Chart.Version }}
-                    podName: '${env:MY_POD_NAME}'         
+                    podName: '${env:MY_POD_NAME}'
+                    clusterName: {{ .Values.global.cluster }}
               metric_relabel_configs:
                 - source_labels: [ __name__ ]
                   regex: '.*bytes_received.*'
@@ -107,6 +110,7 @@ data:
                   labels:
                     version: {{ .Chart.Version }}
                     podName: '${env:MY_POD_NAME}'
+                    clusterName: {{ .Values.global.cluster }}
               metric_relabel_configs:
                 - source_labels: [ __name__ ]
                   regex: '.*bytes_(sent|received).*'
