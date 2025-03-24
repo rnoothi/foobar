@@ -26,7 +26,7 @@ receivers:
     logfilter:
       enabled: false
       flush_interval: 5s
-      pattern: ""   
+      pattern: ".*#.*#.*#.*"   
       buffer_size: 262144
     enableDefaultHost: false
     enableRuntimeMetrics: true
@@ -61,7 +61,7 @@ image:
   # -- The pull policy is defaulted to IfNotPresent, which skips pulling an image if it already exists. If pullPolicy is defined without a specific value, it is also set to Always.
   pullPolicy: IfNotPresent
   # --  Overrides the image tag whose default is the chart appVersion.
-  tag: "0.2.10"
+  tag: "0.2.11"
 
 # -- Name of the Kubernetes cluster monitored. Mandatory. Can be configured also with `global.cluster`
 cluster: ""
