@@ -1,7 +1,7 @@
 apiVersion: v2
-name: gateway
+name: pipeline-control-gateway
 type: application
-version:  0.3.7
+version:  0.3.8
 
 
 dependencies:
