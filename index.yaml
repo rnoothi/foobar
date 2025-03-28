@@ -427,6 +427,22 @@ entries:
     version: 0.1.0
   pipeline-control-gateway:
   - apiVersion: v2
+    appVersion: 0.2.11
+    created: "2025-03-28T04:28:02.498928937Z"
+    dependencies:
+    - name: common-library
+      repository: https://helm-charts.newrelic.com
+      version: 1.1.1
+    digest: d1950c477b2d9f65f681dee0775e4879dc2bb724e10b186f8319e1a79fb7f728
+    maintainers:
+    - name: rnoothi
+      url: https://github.com/rnoothi
+    name: pipeline-control-gateway
+    type: application
+    urls:
+    - https://github.com/rnoothi/foobar/releases/download/pipeline-control-gateway-0.3.8/pipeline-control-gateway-0.3.8.tgz
+    version: 0.3.8
+  - apiVersion: v2
     appVersion: 0.2.5
     created: "2025-03-19T08:21:18.078404103Z"
     dependencies:
@@ -442,4 +458,4 @@ entries:
     urls:
     - https://github.com/rnoothi/foobar/releases/download/pipeline-control-gateway-0.3.1/pipeline-control-gateway-0.3.1.tgz
     version: 0.3.1
-generated: "2025-03-26T05:36:27.496214012Z"
+generated: "2025-03-28T04:28:02.498989269Z"
